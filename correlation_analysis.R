@@ -8,6 +8,7 @@ pairs(cigarette_consumption[,2:8],col="dodgerblue4",pch=100)
 #Regression Model -Full Model
 reg.model<-lm(Sales~Age+HS+Income+Black+Female+Price)
 summary(reg.model)
+#http://www.investopedia.com/ask/answers/012615/whats-difference-between-rsquared-and-adjusted-rsquared.asp
 
 
 # Four PLots like Normal QQPlo,.......
@@ -31,7 +32,8 @@ p-value=pf(f,2,(51-6-1))
 # Confidence Interval for the slopes
 confint(reg.model,level=0.95)
 
-#Correlation Matrix
+#Correlation Matrix 
+#https://explorable.com/partial-correlation-analysis
 cor(cigarette_consumption[,2:8])
 
 
