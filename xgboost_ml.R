@@ -1,0 +1,1 @@
+dt<-fread('~/r_python/train.csv')
