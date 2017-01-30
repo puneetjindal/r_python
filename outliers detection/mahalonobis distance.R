@@ -5,3 +5,4 @@ is.height.outlier <- abs(scale(hw$Height.cm)) > 2
 is.weight.outlier <- abs(scale(hw$Weight.kg)) > 2
 pch   <- (is.height.outlier | is.weight.outlier) * 16
 plot(hw, pch=pch) 
+scale()
