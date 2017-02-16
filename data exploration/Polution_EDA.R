@@ -1,5 +1,5 @@
 
-RKPuram_un = read.csv(file="RK Puram_Delhi_PD.csv", sep="," )
+RKPuram_un = read.csv(file="", sep="," )
 View(RKPuram_un)
 
 names(RKPuram_un)[names(RKPuram_un)=="BEN"] <- "Benzene"
