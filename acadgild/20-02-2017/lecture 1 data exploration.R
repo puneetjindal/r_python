@@ -3,11 +3,12 @@
 
 data <- mtcars
 
-
+#puneet_jindal_2014@cba.isb.edu
 
 #How to load data file(s)?
 # Read CSV into R
-MyData <- read.csv(file="c:/TheDataIWantToReadIn.csv", header=TRUE, sep=",")
+MyData <- read.csv(file="acadgild/20-02-2017/final_data.csv", header=TRUE, sep=";")
+
 #Read a Tab seperated file
 Tabseperated <- read.table("c:/TheDataIWantToReadIn.txt", sep="\t", header=TRUE)
 
@@ -25,29 +26,48 @@ b <- c("one","two","three") # character vector
 c <- c(TRUE,TRUE,TRUE,FALSE,TRUE,FALSE) #logical vector
 
 a[c(2,4)] # 2nd and 4th elements of vector
+a[2:4]
 
 # matrices
 #Lets generate 5 x 4 numeric matrix
 y<-matrix(1:20, nrow=5,ncol=4)
 
 # another example
-cells <- c(1,26,24,68)
-rnames <- c("R1", "R2")
+cells <- c(1,26,24,68,67,87)
+rnames <- c("R1", "R2","R3")
 cnames <- c("C1", "C2")
-mymatrix <- matrix(cells, nrow=2, ncol=2, byrow=TRUE,dimnames=list(rnames, cnames)) 
+mymatrix <- matrix(cells, nrow=3, ncol=2, byrow=TRUE,dimnames=list(rnames, cnames)) 
 
-x[,4] # 4th column of matrix
-x[3,] # 3rd row of matrix
-x[2:4,1:3] # rows 2,3,4 of columns 1,2,3
+mymatrix[,2] # 4th column of matrix
+mymatrix[,3] # 4th column of matrix
+
+mymatrix[3,] # 3rd row of matrix
+mymatrix[4,] # 4rd row of matrix
+
+mymatrix[1:5,1:3] # rows 2,3,4 of columns 1,2,3
+mymatrix[1:2,1:2]
+
+##Error in x[1:2, 1:2] : incorrect number of dimensions
 
 
 ###arrays  multidimensional
 x <- array(1:20, dim=c(1,4,5))
+##TODOpractise
+
 
 ### List An ordered collection of objects (components). lists
 # example of a list with 4 components -
 # a string, a numeric vector, a matrix, and a scaler
-w <- list(name="Fred", mynumbers=a, mymatrix=y, age=5.3)
+w1 <- list(name="Fred", mynumbers=a, mymatrix=y, age=5.3)
+
+
+##TODOpractise
+#Student performance problem statment
+#a) his name
+#b) 5 months of performance- a, b, c, b,f
+#c) list(w1,w2....,wn) of students in my class subsequently for the whole class/school
+##TODOpractise MongoDB how MongoDB stores it and enables filtering,projections,aggregations
+
 
 # example of a list containing two lists
 v <- c(list1,list2) 
@@ -64,9 +84,10 @@ f <- c(TRUE,TRUE,TRUE,FALSE)
 mydata <- data.frame(d,e,f)
 names(mydata) <- c("ID","Color","Passed") # variable names 
 
-myframe[3:5] # columns 3,4,5 of data frame
-myframe[c("ID","Age")] # columns ID and Age from data frame
-myframe$X1 # variable x1 in the data frame 
+mydata[3:5,] # columns 3,4,5 of data frame
+mydata[c("ID","Color")] # columns ID and Age from data frame
+#mydata$X1 # variable x1 in the data frame 
+MyData$X <- NULL
 
 ## factor
 # variable gender with 20 "male" entries and
@@ -95,7 +116,6 @@ table(mons)
 
 
 
-
 ## data type conversions
 #convert a variable to different data type
 is.numeric()
@@ -103,12 +123,18 @@ is.character()
 is.vector()
 is.matrix()
 is.data.frame()
-as.numeric()
+
+#as.numeric()  very important
 as.character()
 as.vector()
-as.matrix()
+#as.matrix()   very important 
 as.data.frame()
 
+###
+##
+#Take a numeric vector vec <- c(1,2,5,3,5,7)
+#  vec_fac<- as.factor(vec)
+## vec <- as.numeric(vec_fac)---
 
 
 
@@ -132,8 +158,9 @@ rm(object) # delete an object
 install.packages('Hmisc')
 library('Hmisc')
 help("describe")
-## mean(), median(), range(), var() ,quartiles in moments package
 
+library('moments')
+## mean(), median(), range(), var() ,quartiles in moments package
 
 
 
@@ -193,14 +220,16 @@ square_int(-2)
 ### merge datasets in R
 #cbind() and rbind() functions
 c(object,object,...)       # combine objects into a vector
-cbind(object, object, ...) # combine objects as columns
+cbind(object, object, ...) # combine objects as columns very frequently used
 rbind(object, object, ...) # combine objects as rows 
+
 ## adding columns
 #To merge two data frames (datasets) horizontally, use the merge function.
 # merge two data frames by ID
 total <- merge(dataframeA,dataframeB,by="ID")
 # merge two data frames by ID and Country
 total <- merge(dataframeA,dataframeB,by=c("ID","Country")) 
+
 
 #To join two data frames (datasets) vertically, use the rbind function
 authors <- data.frame(
@@ -220,6 +249,9 @@ books <- data.frame(
                    "Venables & Smith"))
 
 m1 <- merge(authors, books, by.x = "surname", by.y = "name")
+
+
+
 
 
 ### apply, sapply and lapply functions in R
@@ -362,6 +394,8 @@ aggdata <-aggregate(mtcars, by=list(mtcars$cyl,mtcars$gear), FUN=mean, na.rm=TRU
 ### product sums in R
 cumsum(1:10)
 cumprod(1:10)
+## share in tomorrow lecture on prod sums 
+
 ## generally useful in times series data
 
 
