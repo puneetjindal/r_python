@@ -137,6 +137,10 @@ as.data.frame()
 ## vec <- as.numeric(vec_fac)---
 
 
+a=c(10,9,3,8,8,10,4,10,10)
+is.numeric(a)
+a_fac <- as.factor(a)
+a_int <- as.numeric(a_fac)
 
 
 ##no brainer functions in R
@@ -265,7 +269,7 @@ In this case we expect to get three numbers at the end, the mean value for each 
 so tell apply to work along columns by passing 2 as the second argument. 
 """
 apply(mtcars, 2, mean)
-apply(mtcars, 2, mean)
+apply(mtcars, 1, mean)
 
 # But when it comes to iterate over multiple columns or multiple rows at once 
 #These two functions work in a similar way, traversing over a set of data like a list 
@@ -275,6 +279,8 @@ sapply(1:3, function(x) x^2)
 #lapply is very similar, however it will return a list rather than a vector:
 lapply(1:3, function(x) x^2)
 
+sapply(mtcars,class)
+lapply(mtcars,class)
 ## just try to look at unlist function in R
 
 
@@ -297,14 +303,15 @@ getPrimeNumbers <- function(n) {
   which(primes)
 }
 
-system.time(result <- foreach(i=10:10000) %do% getPrimeNumbers(i))
+system.time(result <- foreach(i=10:100000000) %do% getPrimeNumbers(i))
 
 library(doParallel)  
 no_cores <- detectCores() - 1  
 cl <- makeCluster(no_cores, type="FORK")  
 registerDoParallel(cl)  
-system.time(result <- foreach(i=10:10000) %dopar% getPrimeNumbers(i))
+system.time(result <- foreach(i=10:100000000) %dopar% getPrimeNumbers(i))
 stopCluster(cl)
+## overhead
 
 
 
@@ -342,11 +349,20 @@ gather() requires the columns that needs to be treated as ids, all the other col
 are going to be used as key-value pairs.
 gather() cannot handle matrices or arrays, while melt() can
 """
-
+sapply(gathered.messy,class)
 ###Split a column: separate() vs colsplit()
-tidy <- separate(gathered.messy,key, into = c("location", "time"), sep = "\.") 
-res.tidy <- cbind(molten.messy[1:2], colsplit(molten.messy[, 3], "\.", c("location", "time")),molten.messy[4])
+##
+##tidy <- separate(gathered.messy,key, into = c("location", "time"), sep = "\.") 
+res.tidy <- cbind(molten.messy[1:2], colsplit(molten.messy[, 3], ".", c("location", "time")),molten.messy[4])
 
+
+tidy <- separate(gathered.messy,
+                 key, into = c("location", "time"), sep = "\.") 
+res.tidy <- cbind(molten.messy[1:2], 
+                  colsplit(molten.messy[, 3], "\.", c("location", "time")),
+                  molten.messy[4])
+
+head(tidy)
 ###colsplit() operates only on a single column we usecbind() to insert the new two 
 #columns in the data frame. separate() performs all the operation at once reducing the
 #possibility of making mistakes.
@@ -390,7 +406,6 @@ aggdata <-aggregate(mtcars, by=list(mtcars$cyl,mtcars$gear), FUN=mean, na.rm=TRU
 
 
 
-
 ### product sums in R
 cumsum(1:10)
 cumprod(1:10)
@@ -411,7 +426,7 @@ newdata <- mtcars[order(mpg, -cyl),]
 
 ## sampling in R especially random sampling
 # select variables v1, v2, v3
-myvars <- c("v1", "v2", "v3")
+myvars <- c("d", "f")
 newdata <- mydata[myvars]
 
 # exclude variables v1, v2, v3
@@ -436,6 +451,7 @@ newdata <- subset(mydata, age >= 20 | age < 10,select=c(ID, Weight))
 # take a random sample of size 50 from a dataset mydata
 # sample without replacement
 mysample <- mydata[sample(1:nrow(mydata), 50,replace=FALSE),] 
+## createDataPartition() in caret
 
 
 ## remove duplicates in R
@@ -446,6 +462,7 @@ b <- c(1,1,2,4,1,1,2,2)
 df <-data.frame(a,b)
 duplicated(df)
 df[!duplicated(df), ]
+
 
 library(dplyr)
 df %>% distinct
@@ -459,6 +476,7 @@ df %>% distinct
 #https://www.analyticsvidhya.com/blog/2015/07/guide-data-visualization-r/
 #https://www.analyticsvidhya.com/blog/2015/08/cheat-sheet-data-visualization-r/
 
+
 ## walkthrough kaggle
 
 #Let me know any doubts.
@@ -467,7 +485,7 @@ df %>% distinct
 #https://www.r-bloggers.com/merging-data-sets-based-on-partially-matched-data-elements/
 #http://blog.h2o.ai/2016/04/fast-csv-writing-for-r/?_ga=1.128718863.2013057348.1469853273
 ## introduction to dplyr package in R
-##data.table package in R
 
+##data.table package in R
 
 #I am reachable at puneet_jindal_2014@cba.isb.edu
