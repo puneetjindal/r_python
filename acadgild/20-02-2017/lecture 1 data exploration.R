@@ -129,12 +129,14 @@ as.character()
 as.vector()
 #as.matrix()   very important 
 as.data.frame()
+#http://stackoverflow.com/questions/5158790/should-i-use-a-data-frame-or-a-matrix
 
 ###
 ##
 #Take a numeric vector vec <- c(1,2,5,3,5,7)
 #  vec_fac<- as.factor(vec)
 ## vec <- as.numeric(vec_fac)---
+#http://www.dummies.com/programming/r/how-to-convert-a-factor-in-r/
 
 
 
