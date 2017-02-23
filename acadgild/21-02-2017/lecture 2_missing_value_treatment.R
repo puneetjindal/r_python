@@ -5,10 +5,12 @@ p_load('mice','VIM','HotDeckImputation','hot.deck')
 
 data("airquality")
 data <- airquality
+sapply(data,class)
+
 data$Month <- as.factor(data$Month)
 data$Day <- as.factor(data$Day)
 
-#We are remove few values in a separate dataset so that we can compare our imputation effectiveness later by comparing with the original 
+#We remove few values in a separate dataset so that we can compare our imputation effectiveness later by comparing with the original 
 data[4:10,3] <- rep(NA,7)  ## replicate values of NA 7 times
 data[1:5,4] <- NA
 
@@ -54,7 +56,10 @@ MNAR: missing not at random. Missing not at random data is a more serious issue 
 """
 
 summary(data)
-all(complete.cases(data))
+dim(data)
+
+complete.cases(data)
+View(data[complete.cases(data),])
 
 library('mice')
 md.pattern(data[,-c(5,6)])
@@ -62,6 +67,7 @@ md.pattern(data[,-c(5,6)])
 ##A perhaps more helpful visual representation can be obtained using the VIM package as follows
 
 library('VIM')
+?aggr
 aggr_plot <- aggr(data, col=c('navyblue','red'), numbers=TRUE, sortVars=TRUE, labels=names(data), cex.axis=.7, gap=3, ylab=c("Histogram of missing data","Pattern"))
 ## As we can see plot on the right hand side shows bottom to top the increasing number of missingness
 
@@ -71,7 +77,7 @@ marginplot(data[c(1,2)])
 #If our assumption of MCAR data is correct, then we expect the red and blue box plots to be very similar.
 
 ## Little's test for MCAR
-p_load(BaylorEdPsych)
+p_load('BaylorEdPsych')
 LittleMCAR(x = data)
 ##Segregate various missing value patterns
 #For each pattern, compare observed variable mean vector with MLE of it,weighted by covariances
@@ -106,8 +112,9 @@ summary(lr_model2)
 ### Available case method or pairwise deletion
 #This method uses only the data which is available
 cov(data[,-c(5,6)])
-cov(complete_cases)
+cov(complete_cases[,-c(5,6)])
 cov(data[,-c(5,6)], use = "complete.obs")
+
 
 ## cons of this method when correlations are computed using different cases,
 #the resulting patterns can be ones that are impossible to produce with complete data and eventually incorrect statistics
@@ -117,6 +124,7 @@ cov(data[,-c(5,6)], use = "complete.obs")
 # computing the mean column wise and replacing the NA values in the column with mean/median based on the data distribution
 ##this might distort the distribution of the data by making it more peaked around mean and thereby reducing variance
 ## this will provide biased estimates inspite of the type of missingness
+
 install.packages('HotDeckImputation')
 library(HotDeckImputation)
 
@@ -131,7 +139,7 @@ imputed_data <- impute.mean(as.matrix(data))
 ##This method sorts respondents and non-respondents into a number of imputation subsets according to a user-specied set of covariates
 ## Missing values are replaced with values from matching respondents that are similar wrt to covariates
 ## its based on the research here by https://www.researchgate.net/profile/Dieter_Joenssen
-imputed_data <- impute.NN_HD(as.matrix(data[,-c(5:6)]),distance="man")
+#imputed_data <- impute.NN_HD(as.matrix(data[,-c(5:6)]),distance="man")
 out <- hot.deck(data[,-c(5,6)])
 hd2amelia(out)
 
@@ -199,10 +207,10 @@ output<- mlest(data[,-c(5,6)],iterlim = 150)
 ###Multiple imputation
 ##mice methods - Multiple Imputation by Chained Equations. Multiple imputation is a technique for analyzing incomplete datasets where missing data are a concern
 p_load('mice','lattice')
-imp<-mice(data,m=5,max = 2)
+imp<-mice(data,m=5,max = 2, method = 'pmm')
 mat<-complete(imp)
 mat
-bwplot(imp)
+#bwplot(imp)   what this plot says
 
 ##Multiple imputations use simulation models that take from a set of possible responses,
 #and impute in succession to try to come up with a variance/confidence interval that one
