@@ -15,7 +15,8 @@ boxplot(sunday,col="dodgerblue4")
 boxplot(daily,col="dodgerblue4")
 
 #ScatterPlot & adding Line segments to the points and drawing the fitted line on the plot
-plot(daily,sunday,main="Scatter Plot ", col="Dodgerblue4", col.main="Dodgerblue4", col.lab="Dodgerblue4", xlab="Daily Circulations", ylab="Sunday Circulations", pch=20)
+plot(daily,sunday,main="Scatter Plot ", col="Dodgerblue4", col.main="Dodgerblue4", col.lab="Dodgerblue4",
+     xlab="Daily Circulations", ylab="Sunday Circulations", pch=20)
 segments(daily, sunday, daily, 100+daily*1.3)
 abline(coef=c(100,1.3), col="red")
 
